@@ -33,7 +33,7 @@ BUCKET = "projet-funathon"
 
 # Une personnalisation sympa pour l'onglet
 st.set_page_config(page_title="Les parcelles agri", page_icon="🌱", layout="wide")
-st.title('Les parcelles agricoles 🌱')
+st.title('Les parcelles agricoles 🌱 ')
 
 # Add a selectbox to the sidebar:
 address = st.sidebar.text_input("Entrez une adresse")
