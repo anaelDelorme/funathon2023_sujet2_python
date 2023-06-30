@@ -4,13 +4,11 @@ pandas
 geopandas
 sqlalchemy 
 geoalchemy2 
-os
 s3fs
 boto3
 folium
 streamlit_folium 
 branca
-tempfile
 pyreadr
 pyecharts
 streamlit_echarts 
