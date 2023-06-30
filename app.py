@@ -36,7 +36,7 @@ st.set_page_config(page_title="Les parcelles agri", page_icon="🌱", layout="wi
 st.title('Les parcelles agricoles 🌱 ')
 
 # Add a selectbox to the sidebar:
-address = st.sidebar.text_input("Entrez une adresse")
+address = st.sidebar.text_input("Entrez une adresse :")
 if address == "":
     address = 'complexe agricole auzeville tolosane'
 
