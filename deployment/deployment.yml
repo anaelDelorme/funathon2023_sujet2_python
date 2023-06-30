@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rpg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rpg
+  template:
+    metadata:
+      labels:
+        app: rep
+    spec:
+      containers:
+        - name: app
+          image: anaeldelorme/rpg:v1.2.2
+          resources:
+            limits:
+              memory: "2Gi"
+              cpu: "2000m"
