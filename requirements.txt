@@ -13,3 +13,4 @@ pyreadr
 pyecharts
 streamlit_echarts 
 geopy
+psycopg2
