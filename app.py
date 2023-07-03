@@ -23,11 +23,7 @@ from pyecharts.charts import TreeMap
 from pyecharts.commons.utils import JsCode
 
 
-
-fs = s3fs.S3FileSystem(client_kwargs={'endpoint_url': 'https://'+ os.environ['AWS_S3_ENDPOINT']},
-                    key = os.environ["AWS_ACCESS_KEY_ID"], 
-                    secret = os.environ["AWS_SECRET_ACCESS_KEY"], 
-                    token = os.environ["AWS_SESSION_TOKEN"])   
+s3 = boto3.client('s3')
 
 BUCKET = "projet-funathon"
 
@@ -36,6 +32,9 @@ st.set_page_config(page_title="Les parcelles agri", page_icon="🌱", layout="wi
 st.title('Les parcelles agricoles 🌱 ')
 
 # Add a selectbox to the sidebar:
+aws_s3_endpoint = os.environ.get('AWS_ACCESS_KEY_ID')
+st.write(aws_s3_endpoint)
+
 address = st.sidebar.text_input("Entrez une adresse : ")
 if address == "":
     address = 'complexe agricole auzeville tolosane'
@@ -75,9 +74,9 @@ if coordinates:
         def recup_cultures():
             # références des cultures
             FILE_KEY_S3 = "2023/sujet2/diffusion/ign/rpg/REF_CULTURES_GROUPES_CULTURES_2020.csv"
-            FILE_PATH_S3 = BUCKET + "/" + FILE_KEY_S3
-            with fs.open(FILE_PATH_S3, mode="rb") as file_in:
-                lib_group_cult = pd.read_csv(file_in, sep=";")
+            response = s3.get_object(Bucket=BUCKET, Key=FILE_KEY_S3)
+            data = response['Body'].read().decode('utf-8')
+            lib_group_cult = pd.read_csv(StringIO(data), sep=",")
             lib_group_cult_agrege = lib_group_cult.copy()
             lib_group_cult_agrege = lib_group_cult_agrege[['CODE_GROUPE_CULTURE', 'LIBELLE_GROUPE_CULTURE']].drop_duplicates()
             lib_group_cult_agrege = lib_group_cult_agrege.rename(columns = {'CODE_GROUPE_CULTURE':'code_group', 'LIBELLE_GROUPE_CULTURE':'Culture'})
@@ -88,9 +87,9 @@ if coordinates:
         @st.cache_data
         def liste_dep():
             FILE_KEY_S3 = "2023/sujet2/diffusion/ign/adminexpress_cog_simpl_000_2023.gpkg"
-            FILE_PATH_S3 = BUCKET + "/" + FILE_KEY_S3
-            with fs.open(FILE_PATH_S3, mode="rb") as file_in:
-                dep = gpd.read_file(file_in, layer = "departement")
+            response = s3.get_object(Bucket=BUCKET, Key=FILE_KEY_S3)
+            data = response['Body'].read()
+            dep = gpd.read_file(StringIO(data), layer = "departement")
             dep = dep.to_crs('EPSG:2154')
             dep2 = dep.copy()
             dep2.geometry = dep2.geometry.buffer(200)
@@ -210,12 +209,6 @@ if coordinates:
         @st.cache_data
         def creer_stat_dep():
             FILE_KEY_S3 = "2023/sujet2/diffusion/resultats/stat_group_cult_by_dep.rds"
-            FILE_PATH_S3 = BUCKET + "/" + FILE_KEY_S3
-            s3 = boto3.client("s3",
-                    endpoint_url = 'https://'+ os.environ['AWS_S3_ENDPOINT'],
-                    aws_access_key_id= os.environ["AWS_ACCESS_KEY_ID"], 
-                    aws_secret_access_key= os.environ["AWS_SECRET_ACCESS_KEY"], 
-                    aws_session_token = os.environ["AWS_SESSION_TOKEN"])
             response = s3.get_object(Bucket=BUCKET, Key=FILE_KEY_S3)
             rds_data = response['Body'].read()
             with tempfile.NamedTemporaryFile() as tmp:
@@ -228,9 +221,9 @@ if coordinates:
         @st.cache_data
         def creer_stat_france():
             FILE_KEY_S3 = "2023/sujet2/diffusion/resultats/stat_group_cult_fm.csv"
-            FILE_PATH_S3 = BUCKET + "/" + FILE_KEY_S3
-            with fs.open(FILE_PATH_S3, mode="rb") as file_in:
-                stat_fm = pd.read_csv(file_in, sep=",")
+            response = s3.get_object(Bucket=BUCKET, Key=FILE_KEY_S3)
+            data = response['Body'].read().decode('utf-8')
+            stat_fm = pd.read_csv(StringIO(data), sep=",")
             return(stat_fm)
         stat_france = creer_stat_france()
 
