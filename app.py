@@ -103,7 +103,7 @@ if coordinates:
         df = df.to_crs('EPSG:2154')
         df['coord_pt_gps'] = df['geometry'].apply(lambda geom: geom.wkt)
         
-        db_connection_url = "postgresql://" + os.environ['PG_URL_RPG']
+        db_connection_url = "postgresql://" + os.environ['POSTGRESQL_DB_USER'] + ":" + os.environ['POSTGRESQL_DB_PASSWORD']  + "@" + os.environ['POSTGRESQL_DB_HOST'] + ":" + os.environ['POSTGRESQL_DB_PORT'] + "/"+ os.environ['POSTGRESQL_DB_NAME']
         engine = create_engine(db_connection_url)
         df.to_postgis('point_anael', con = engine,  if_exists='replace')
 
