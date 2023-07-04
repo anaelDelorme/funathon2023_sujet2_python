@@ -49,7 +49,7 @@ if address == "":
 # Add a slider to the sidebar:
 rayon = st.sidebar.slider(
     "Taille du rond autour de l'adresse (rayon en mètre)",
-    10, 50000, 10000
+    10, 20000, 10000
 )
 
 def get_coordinates(address):
@@ -323,4 +323,4 @@ if coordinates:
 else:
      st.error("Adresse non trouvée. Veuillez essayer avec une autre adresse.")
 
-st.sidebar.write("*version : 2.0.10*")
+st.sidebar.write("*version : 2.1.0*")
