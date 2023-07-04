@@ -49,7 +49,7 @@ if address == "":
 # Add a slider to the sidebar:
 rayon = st.sidebar.slider(
     "Taille du rond autour de l'adresse (rayon en mètre)",
-    10, 20000, 10000
+    10, 50000, 10000
 )
 
 def get_coordinates(address):
@@ -112,7 +112,7 @@ if coordinates:
         engine = create_engine(db_connection_url)
         df.to_postgis('point_anael', con = engine,  if_exists='replace')
 
-        query_prox = "SELECT * FROM (SELECT *  FROM rpg.parcelles  WHERE geom && ST_Expand(ST_SetSRID(ST_MakePoint("+ str(df.lon[0]) + ","+ str(df.lat[0])+"), 2154), "+ str(df.rayon[0])+")) subquery WHERE ST_Distance(ST_SetSRID(ST_MakePoint(" + str(df.lon[0]) +", " +str(df.lat[0])+"), 2154), geom) <= "+ str(df.rayon[0])+";"
+        query_prox = "SELECT * FROM (SELECT *  FROM rpg.parcelles  WHERE geom && ST_Expand(ST_SetSRID(ST_MakePoint("+ str(df.lat[0]) + ","+ str(df.lon[0])+"), 2154), "+ str(df.rayon[0])+")) subquery WHERE ST_Distance(ST_SetSRID(ST_MakePoint(" + str(df.lat[0]) +", " +str(df.lon[0])+"), 2154), geom) <= "+ str(df.rayon[0])+";"
         
        # SELECT row_number() OVER () AS row_id, p.coord_pt_gps, p.rayon, r.* FROM public.point_anael p JOIN rpg.parcelles r ON ST_DWithin(ST_SetSRID(p.geometry, 2154), r.geom, p.rayon);"
         points = gpd.read_postgis(query_prox, engine, geom_col='geom')
@@ -323,4 +323,4 @@ if coordinates:
 else:
      st.error("Adresse non trouvée. Veuillez essayer avec une autre adresse.")
 
-st.sidebar.write("*version : 2.0.8*")
+st.sidebar.write("*version : 2.0.9*")
