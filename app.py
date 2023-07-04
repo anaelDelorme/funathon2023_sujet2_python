@@ -21,6 +21,7 @@ from streamlit_echarts import st_pyecharts
 from geopy.geocoders import Nominatim
 from pyecharts.charts import TreeMap
 from pyecharts.commons.utils import JsCode
+from io import StringIO
 
 
 s3 = boto3.client("s3",endpoint_url = 'https://'+ os.environ.get('AWS_S3_ENDPOINT'),
@@ -36,12 +37,6 @@ st.set_page_config(page_title="Les parcelles agri", page_icon="🌱", layout="wi
 st.title('Les parcelles agricoles 🌱 ')
 
 # Add a selectbox to the sidebar:
-aws_s3_endpoint = os.environ.get('AWS_ACCESS_KEY_ID')
-st.write("New")
-st.write(aws_s3_endpoint)
-
-pg_user = os.environ['POSTGRESQL_DB_USER']
-st.write(pg_user)
 
 address = st.sidebar.text_input("Entrez une adresse : ")
 if address == "":
