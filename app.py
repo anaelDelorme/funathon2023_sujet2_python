@@ -51,7 +51,7 @@ rayon = st.sidebar.slider(
     "Taille du rond autour de l'adresse (rayon en mètre)",
     10, 50000, 10000
 )
-st.sidebar.write("version : 1.2.12")
+
 def get_coordinates(address):
     geolocator = Nominatim(user_agent="anael.delorme")  # Initialise le géocodeur avec l'identifiant d'application
     location = geolocator.geocode(address)  # Géocode l'adresse
@@ -321,4 +321,4 @@ if coordinates:
 else:
      st.error("Adresse non trouvée. Veuillez essayer avec une autre adresse.")
 
-
+st.sidebar.write("*version : 2.0.0*")
