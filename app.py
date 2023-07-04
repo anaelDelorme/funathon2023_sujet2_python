@@ -23,7 +23,11 @@ from pyecharts.charts import TreeMap
 from pyecharts.commons.utils import JsCode
 
 
-s3 = boto3.client('s3')
+s3 = boto3.client("s3",endpoint_url = 'https://'+ os.environ.get('AWS_S3_ENDPOINT'),
+                  aws_access_key_id= os.environ.get('AWS_ACCESS_KEY_ID'), 
+                  aws_secret_access_key= os.environ.get('AWS_SECRET_ACCESS_KEY'))
+
+
 
 BUCKET = "projet-funathon"
 
@@ -33,6 +37,7 @@ st.title('Les parcelles agricoles 🌱 ')
 
 # Add a selectbox to the sidebar:
 aws_s3_endpoint = os.environ.get('AWS_ACCESS_KEY_ID')
+st.write("New")
 st.write(aws_s3_endpoint)
 
 pg_user = os.environ['POSTGRESQL_DB_USER']

@@ -14,7 +14,42 @@ spec:
     spec:
       containers:
         - name: app
-          image: anaeldelorme/rpg:v1.2.5
+          image: anaeldelorme/rpg:v1.2.6
+          env:
+            # env var for s3 connexion
+            - name: AWS_S3_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: rpg-s3
+                  key: AWS_S3_ENDPOINT
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: rpg-s3
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: rpg-s3
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: AWS_DEFAULT_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: rpg-s3
+                  key: AWS_DEFAULT_REGION
+            - name: POSTGRESQL_DB_USER
+              value: funathon16
+            - name: POSTGRESQL_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rpg-postgresql
+                  key: password
+            - name: POSTGRESQL_DB_PORT
+              value: "5432"
+            - name: POSTGRESQL_DB_HOST
+              value: postgresql-758156.projet-funathon
+            - name: POSTGRESQL_DB_NAME
+              value: defaultdb
           resources:
             limits:
               memory: "2Gi"
