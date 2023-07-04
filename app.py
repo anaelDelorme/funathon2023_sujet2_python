@@ -42,6 +42,7 @@ address = st.sidebar.text_input("Entrez une adresse : ")
 if address == "":
     address = 'complexe agricole auzeville tolosane'
 
+st.write("version : 1.2.8")
 
 # Add a slider to the sidebar:
 rayon = st.sidebar.slider(
