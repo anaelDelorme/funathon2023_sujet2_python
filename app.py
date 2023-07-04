@@ -42,14 +42,14 @@ address = st.sidebar.text_input("Entrez une adresse : ")
 if address == "":
     address = 'complexe agricole auzeville tolosane'
 
-st.write("version : 1.2.8")
+
 
 # Add a slider to the sidebar:
 rayon = st.sidebar.slider(
     "Taille du rond autour de l'adresse (rayon en mètre)",
     10, 50000, 10000
 )
-
+st.sidebar.write("version : 1.2.9")
 def get_coordinates(address):
     geolocator = Nominatim(user_agent="anael.delorme")  # Initialise le géocodeur avec l'identifiant d'application
     location = geolocator.geocode(address)  # Géocode l'adresse
