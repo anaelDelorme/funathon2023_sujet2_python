@@ -28,7 +28,9 @@ s3 = boto3.client("s3",endpoint_url = 'https://'+ os.environ.get('AWS_S3_ENDPOIN
                   aws_access_key_id= os.environ.get('AWS_ACCESS_KEY_ID'), 
                   aws_secret_access_key= os.environ.get('AWS_SECRET_ACCESS_KEY'))
 
-
+fs = s3fs.S3FileSystem(client_kwargs={'endpoint_url': 'https://'+ os.environ['AWS_S3_ENDPOINT']},
+                    key = os.environ["AWS_ACCESS_KEY_ID"], 
+                    secret = os.environ["AWS_SECRET_ACCESS_KEY"])   
 
 BUCKET = "projet-funathon"
 
@@ -49,7 +51,7 @@ rayon = st.sidebar.slider(
     "Taille du rond autour de l'adresse (rayon en mètre)",
     10, 50000, 10000
 )
-st.sidebar.write("version : 1.2.11")
+st.sidebar.write("version : 1.2.12")
 def get_coordinates(address):
     geolocator = Nominatim(user_agent="anael.delorme")  # Initialise le géocodeur avec l'identifiant d'application
     location = geolocator.geocode(address)  # Géocode l'adresse
@@ -91,11 +93,9 @@ if coordinates:
         @st.cache_data
         def liste_dep():
             FILE_KEY_S3 = "2023/sujet2/diffusion/ign/adminexpress_cog_simpl_000_2023.gpkg"
-            response = s3.get_object(Bucket=BUCKET, Key=FILE_KEY_S3)
-            data = response['Body'].read()
-            result = chardet.detect(data)
-            encoding = result['encoding']
-            dep = gpd.read_file(StringIO(data.decode(encoding)), layer="departement")
+            FILE_PATH_S3 = BUCKET + "/" + FILE_KEY_S3
+            with fs.open(FILE_PATH_S3, mode="rb") as file_in:
+                dep = gpd.read_file(file_in, layer = "departement")
             dep = dep.to_crs('EPSG:2154')
             dep2 = dep.copy()
             dep2.geometry = dep2.geometry.buffer(200)
