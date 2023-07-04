@@ -35,6 +35,9 @@ st.title('Les parcelles agricoles 🌱 ')
 aws_s3_endpoint = os.environ.get('AWS_ACCESS_KEY_ID')
 st.write(aws_s3_endpoint)
 
+pg_user = os.environ['POSTGRESQL_DB_USER']
+st.write(pg_user)
+
 address = st.sidebar.text_input("Entrez une adresse : ")
 if address == "":
     address = 'complexe agricole auzeville tolosane'
