@@ -49,7 +49,7 @@ rayon = st.sidebar.slider(
     "Taille du rond autour de l'adresse (rayon en mètre)",
     10, 50000, 10000
 )
-st.sidebar.write("version : 1.2.9")
+st.sidebar.write("version : 1.2.10")
 def get_coordinates(address):
     geolocator = Nominatim(user_agent="anael.delorme")  # Initialise le géocodeur avec l'identifiant d'application
     location = geolocator.geocode(address)  # Géocode l'adresse
@@ -93,7 +93,7 @@ if coordinates:
             FILE_KEY_S3 = "2023/sujet2/diffusion/ign/adminexpress_cog_simpl_000_2023.gpkg"
             response = s3.get_object(Bucket=BUCKET, Key=FILE_KEY_S3)
             data = response['Body'].read()
-            dep = gpd.read_file(StringIO(data), layer = "departement")
+            dep = gpd.read_file(StringIO(data.decode('utf-8')), layer="departement")
             dep = dep.to_crs('EPSG:2154')
             dep2 = dep.copy()
             dep2.geometry = dep2.geometry.buffer(200)
