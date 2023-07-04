@@ -14,3 +14,4 @@ pyecharts
 streamlit_echarts 
 geopy
 psycopg2
+chardet
