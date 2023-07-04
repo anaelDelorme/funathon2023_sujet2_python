@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: anaeldelorme/rpg:v2.0.1
+          image: anaeldelorme/rpg:v2.0.2
           env:
             # env var for s3 connexion
             - name: AWS_S3_ENDPOINT
