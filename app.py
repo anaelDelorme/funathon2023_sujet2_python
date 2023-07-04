@@ -79,7 +79,7 @@ if coordinates:
             FILE_KEY_S3 = "2023/sujet2/diffusion/ign/rpg/REF_CULTURES_GROUPES_CULTURES_2020.csv"
             response = s3.get_object(Bucket=BUCKET, Key=FILE_KEY_S3)
             data = response['Body'].read().decode('utf-8')
-            lib_group_cult = pd.read_csv(StringIO(data), sep=",")
+            lib_group_cult = pd.read_csv(StringIO(data), sep=";")
             lib_group_cult_agrege = lib_group_cult.copy()
             lib_group_cult_agrege = lib_group_cult_agrege[['CODE_GROUPE_CULTURE', 'LIBELLE_GROUPE_CULTURE']].drop_duplicates()
             lib_group_cult_agrege = lib_group_cult_agrege.rename(columns = {'CODE_GROUPE_CULTURE':'code_group', 'LIBELLE_GROUPE_CULTURE':'Culture'})
