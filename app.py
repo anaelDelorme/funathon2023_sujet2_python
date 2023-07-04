@@ -112,7 +112,7 @@ if coordinates:
         engine = create_engine(db_connection_url)
         df.to_postgis('point_anael', con = engine,  if_exists='replace')
 
-        query_prox = "SELECT row_number() OVER () AS row_id, p.coord_pt_gps, p.rayon, r.* FROM public.point_anael p JOIN rpg.parcelles r ON ST_DWithin(ST_SetSRID(p.geometry, <SRID>), r.geom, p.rayon);"
+        query_prox = "SELECT row_number() OVER () AS row_id, p.coord_pt_gps, p.rayon, r.* FROM public.point_anael p JOIN rpg.parcelles r ON ST_DWithin(ST_SetSRID(p.geometry, 4326), r.geom, p.rayon);"
         points = gpd.read_postgis(query_prox, engine, geom_col='geom')
 
         culture_prox = pd.merge(points, lib_group_cult_agrege, how='left', on='code_group')
@@ -321,4 +321,4 @@ if coordinates:
 else:
      st.error("Adresse non trouvée. Veuillez essayer avec une autre adresse.")
 
-st.sidebar.write("*version : 2.0.2*")
+st.sidebar.write("*version : 2.0.3*")
